@@ -14,6 +14,7 @@ Here we start by importing a python package and using it to pull the transcript 
 
 ```python
 import requests
+import matplotlib.pyplot as plt
 macbeth = requests.get('http://www.gutenberg.org/cache/epub/2264/pg2264.txt').text
 
 print(type(macbeth))
@@ -56,6 +57,108 @@ A common python programming pattern to counting objects, produce histograms, or 
 # Create Bar Graph
 # Include descriptive titles and labels
 ```
+
+
+```python
+from collections import Counter
+```
+
+
+```python
+# Get words 
+words = macbeth.split()
+words[:10]
+```
+
+
+
+
+    ['\ufeff***The',
+     'Project',
+     "Gutenberg's",
+     'Etext',
+     'of',
+     "Shakespeare's",
+     'First',
+     'Folio***',
+     '********************The',
+     'Tragedie']
+
+
+
+
+```python
+# create counter dictionary from words
+word_counter = Counter(words)
+```
+
+
+```python
+# create a list of tuples from the dictionary with words and counts
+word_counter_tuples = sorted([(k, v) for k, v in word_counter.items()], key=lambda x:x[1], reverse=True)
+word_counter_tuples[:5]
+```
+
+
+
+
+    [('the', 620), ('and', 427), ('of', 395), ('to', 367), ('I', 326)]
+
+
+
+
+```python
+# get top 25 words and turn them into a dictionary
+top_25_words = dict(word_counter_tuples[:25])
+top_25_words
+```
+
+
+
+
+    {'And': 169,
+     'I': 326,
+     'Macb.': 137,
+     'That': 80,
+     'The': 131,
+     'a': 255,
+     'and': 427,
+     'be': 133,
+     'for': 100,
+     'haue': 114,
+     'his': 127,
+     'in': 190,
+     'is': 185,
+     'it': 128,
+     'my': 170,
+     'not': 142,
+     'of': 395,
+     'our': 116,
+     'that': 158,
+     'the': 620,
+     'this': 108,
+     'to': 367,
+     'with': 141,
+     'you': 193,
+     'your': 122}
+
+
+
+
+```python
+plt.figure(figsize=(8, 5))
+plt.grid(alpha=0.5, zorder=0)
+plt.bar(range(len(top_25_words.values())), top_25_words.values(), 
+        tick_label=list(top_25_words.keys()), zorder=2)
+
+plt.xticks(rotation='vertical')
+plt.title("Top 25 Words in\nMacbeth")
+plt.show()
+```
+
+
+![png](index_files/index_9_0.png)
+
 
 ## Level Up (Optional)
 This project should take you about an hour and a half to complete. If you're done much more quickly than that and are not behind in the course, feel free to deepen your knowledge by completing any or all of the following tasks until you run out of time:
